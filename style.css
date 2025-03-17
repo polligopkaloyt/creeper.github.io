@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #222;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+#game {
+    margin-top: 50px;
+}
+
+#clicker-container {
+    position: relative;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+#clicker {
+    width: 150px;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+#clicker:active {
+    transform: scale(1.1);
+}
+
+.animated-creeper {
+    position: absolute;
+    width: 30px;
+    animation: fly-up 1s linear forwards;
+}
+
+@keyframes fly-up {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100px); opacity: 0; }
+}
+
+#shop {
+    margin-top: 20px;
+}
+
+button {
+    background: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+}
+
+button:hover {
+    background: #218838;
+}
