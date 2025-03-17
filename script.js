@@ -51,7 +51,7 @@ creeper.addEventListener("click", async () => {
   balance += clickValue;
   updateUI();
   await updateDoc(doc(db, "users", userId), { balance });
-  showAnimation();
+  showAnimation(clickValue);
 });
 
 // Покупка улучшения клика
@@ -84,10 +84,10 @@ setInterval(async () => {
 }, 1000);
 
 // Анимация клика
-function showAnimation() {
+function showAnimation(value) {
   const anim = document.createElement("div");
   anim.classList.add("creeper-popup");
-  anim.innerText = `+${clickValue}`;
+  anim.innerText = `+${value}`;
   document.body.appendChild(anim);
   setTimeout(() => anim.remove(), 1000);
 }
