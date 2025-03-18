@@ -8,6 +8,77 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
     <script src="firebase-config.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('media/MinecraftTen-VGORe.ttf') format('truetype');
+        }
+        body {
+            font-family: 'Minecraft', sans-serif;
+            background: linear-gradient(to bottom, orange, black);
+            text-align: center;
+            color: white;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        #game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #clicker-container {
+            position: relative;
+        }
+        #clicker {
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+        }
+        .floating-plus {
+            position: absolute;
+            font-size: 24px;
+            color: yellow;
+            animation: floatUp 1s ease-out;
+        }
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-50px); }
+        }
+        #menu {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 0;
+        }
+        .menu-btn {
+            background: none;
+            border: none;
+            color: gray;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .menu-btn img {
+            width: 30px;
+            height: 30px;
+            filter: grayscale(100%);
+        }
+        .menu-btn.active {
+            color: white;
+        }
+        .menu-btn.active img {
+            filter: none;
+        }
+    </style>
 </head>
 <body>
     <div id="game">
@@ -23,7 +94,7 @@
     </div>
     
     <div id="menu">
-        <button class="menu-btn" id="play-btn">
+        <button class="menu-btn active" id="play-btn">
             <img src="https://t3.ftcdn.net/jpg/02/86/04/50/360_F_286045095_kSmW7800QQXdJmlUPJTBjrhIXHIVayIB.jpg" alt="Играть">
             <span>Играть</span>
         </button>
@@ -37,6 +108,49 @@
         </button>
     </div>
     
-    <script src="script.js"></script>
+    <script>
+        let balance = 0;
+        let clickValue = 1;
+        let autoclickerActive = false;
+
+        document.getElementById("clicker").addEventListener("click", function(event) {
+            balance += clickValue;
+            document.getElementById("balance").textContent = balance;
+            const plusOne = document.createElement("div");
+            plusOne.textContent = "+" + clickValue;
+            plusOne.className = "floating-plus";
+            plusOne.style.left = `${event.clientX - 10}px`;
+            plusOne.style.top = `${event.clientY - 20}px`;
+            document.body.appendChild(plusOne);
+            setTimeout(() => plusOne.remove(), 1000);
+        });
+
+        document.getElementById("buy-upgrade").addEventListener("click", function() {
+            if (balance >= 50) {
+                balance -= 50;
+                clickValue += 1;
+                document.getElementById("balance").textContent = balance;
+            }
+        });
+
+        document.getElementById("buy-autoclicker").addEventListener("click", function() {
+            if (balance >= 10 && !autoclickerActive) {
+                balance -= 10;
+                document.getElementById("balance").textContent = balance;
+                autoclickerActive = true;
+                setInterval(() => {
+                    balance += clickValue;
+                    document.getElementById("balance").textContent = balance;
+                }, 1000);
+            }
+        });
+
+        document.querySelectorAll(".menu-btn").forEach(button => {
+            button.addEventListener("click", function() {
+                document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
+                this.classList.add("active");
+            });
+        });
+    </script>
 </body>
 </html>
